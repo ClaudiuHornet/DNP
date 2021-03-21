@@ -1,0 +1,139 @@
+﻿@page "/AdultsView"
+@using Models
+@using Data
+@using Microsoft.AspNetCore.Mvc.Filters
+@using Microsoft.AspNetCore.Mvc.Formatters
+
+@inject IAdultData AdultData
+<h3>Here you can see all the Adults</h3>
+<p>
+    Filter by Adult Id: <input type="number" @oninput="@((arg) => FilterId(arg))" style="width:50px"/>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    Filter by Name: <input type="text" @oninput="@((arg) => FilterName(arg))" style="width: 200px"/>
+  
+</p>
+
+@if (AdultsToShow == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else if (!AdultsToShow.Any())
+{
+    <p>
+        <em>No existing Adults. You can use the Add feature to add them</em>
+    </p>
+}
+else
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Adult Id</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Hair Color</th>
+            <th>Eye Color</th>
+            <th>Age</th>
+            <th>Weight</th>
+            <th>Height</th>
+            <th>Sex</th>
+            <th>Job Title</th>
+            <th>Salary</th>
+            <AuthorizeView Policy="SecurityLevel3">
+                <th>Remove</th>
+            </AuthorizeView>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var adult in AdultsToShow)
+        {
+            <tr>
+                <td>@adult.Id</td>
+                <td>@adult.FirstName</td>
+                <td>@adult.LastName</td>
+                <td>@adult.HairColor</td>
+                <td>@adult.EyeColor</td>
+                <td>@adult.Age</td>
+                <td>@adult.Weight</td>
+                <td>@adult.Height</td>
+                <td>@adult.Sex</td>
+                <td>@adult.JobTitle.JobTitle</td>
+                <td>@adult.JobTitle.Salary</td>
+                <AuthorizeView Policy="SecurityLevel3">
+                    <td>
+                        <button @onclick="@((() => RemoveAdult(adult.Id)))">
+                            <i class="oi oi-trash" style="color: red"/>
+                        </button>
+                    </td>
+                </AuthorizeView>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+    private IList<Adult> Adults;
+    private IList<Adult> AdultsToShow;
+
+    private void FilterId(ChangeEventArgs changeEventArgs)
+    {
+        int? filterById = null;
+        try
+        {
+            filterById = int.Parse(changeEventArgs.Value.ToString());
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+        if (filterById != null)
+        {
+            AdultsToShow = Adults.Where(adult => adult.Id == filterById).ToList();
+        }
+        else
+        {
+            AdultsToShow = Adults;
+        }
+    }
+
+    private void FilterName(ChangeEventArgs changeEventArgs)
+    {
+        string? filterByFirstName = null;
+        try
+        {
+            filterByFirstName = changeEventArgs.Value.ToString();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+        if (filterByFirstName != null)
+        {
+            // Here I made it work by concatenating two lists because I search by first name and also by last name
+            AdultsToShow = Adults.Where(adult => adult.FirstName.Contains(filterByFirstName)).ToList();
+            AdultsToShow = AdultsToShow.Concat(Adults.Where(adult => adult.LastName.Contains(filterByFirstName)).ToList()).ToList();
+        }
+        else
+        {
+            AdultsToShow = Adults;
+        }
+    }
+    
+
+    protected override async Task OnInitializedAsync()
+    {
+        Adults = AdultData.GetAdults();
+        AdultsToShow = Adults;
+    }
+
+    private void RemoveAdult(int adultId)
+    {
+        Adult adultToRemove = Adults.First(a => a.Id == adultId);
+        AdultData.RemoveAdult(adultId);
+        Adults.Remove(adultToRemove);
+    }
+
+}

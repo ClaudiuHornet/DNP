@@ -1,0 +1,73 @@
+﻿@page "/register"
+
+@using Assignment_1.Authentication
+@using Assignment_1.Data
+@using Models
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
+@inject IUserService userService
+
+<AuthorizeView>
+    <NotAuthorized>
+        <form>
+                <div>
+                    <br /><br /><br /><br /><br />
+                </div>
+                <div>
+                    <h3 style="font-weight:bold; color:purple">Create an account</h3>
+                </div>
+                <div>
+                    <br />
+                </div>
+                <div class="col-12 row">
+                    <input class="form-control col-12" @bind="username" placeholder="username" />
+                </div>
+                <br />
+                <div class="col-12 row">
+                    <input type="password" class="form-control col-12" @bind="password" placeholder="password" />
+                </div>
+                <br />
+                <div class="col-12 row">
+                    <input type="password" class="form-control col-12" @bind="confirmPassword" placeholder="confirm password" />
+                </div>
+                <br />
+                <div class="col-12 row">
+                    <span class="col-12"></span>
+                    <input type="submit" class="form-control col-6 btn btn-primary" value="Sign up" @onclick="PerformRegisterUser" />
+                    <a href="login" class="col-6">Already an user?</a>
+                </div>
+                <br />
+                <div class="col-12 row" style="text-align:left; font-weight:bold">
+                    <span class="col-12">@Messsage</span>
+                </div>
+            </form>
+    </NotAuthorized>
+</AuthorizeView>
+
+
+ @code {
+
+     private User user;
+     private string username;
+     private string password;
+     private string confirmPassword;
+     public string Messsage { get; set; }
+
+     public async Task PerformRegisterUser()
+     {
+         Messsage = "";
+         try
+         {
+             ((CustomAuthenticationStateProvider) AuthenticationStateProvider).ValidateRegister(username, password, confirmPassword);
+             username = "";
+             password = "";
+             confirmPassword = "";
+         }
+         catch (Exception e)
+         {
+             Messsage = e.Message;
+         }
+     }
+
+ }

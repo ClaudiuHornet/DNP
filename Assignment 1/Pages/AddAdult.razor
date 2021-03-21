@@ -1,0 +1,68 @@
+﻿@page "/AddAdult"
+@using Data
+@using Models
+
+@attribute [Authorize(Policy = "SecurityLevel2")]
+
+@inject IAdultData AdultData
+@inject NavigationManager NavigationManager
+
+<h3>Here you can add an Adult</h3>
+<EditForm Model="@NewAdult" OnValidSubmit="@AddNewAdult">
+    <DataAnnotationsValidator/>
+    <ValidationSummary/>
+    <div class = "form-group">Adult Id:<br/>
+        <InputNumber @bind-Value="NewAdult.Id"/>
+    </div>
+    <div class = "form-group">First Name:<br/>
+        <InputText @bind-Value="NewAdult.FirstName"/>
+    </div>
+    <div class = "form-group">Last Name:<br/>
+        <InputText @bind-Value="NewAdult.LastName"/>
+    </div>
+    <div class = "form-group">Hair Color:<br/>
+        <InputText @bind-Value="NewAdult.HairColor"/>
+    </div>
+    <div class = "form-group">Eye Color:<br/>
+        <InputText @bind-Value="NewAdult.EyeColor"/>
+    </div>
+    <div class = "form-group">Age:<br/>
+        <InputNumber @bind-Value="NewAdult.Age"/>
+    </div>
+    <div class = "form-group">Weight (kg):<br/>
+        <InputNumber @bind-Value="NewAdult.Weight"/>
+    </div>
+    <div class = "form-group">Height (cm):<br/>
+        <InputNumber @bind-Value="NewAdult.Height"/>
+    </div>
+    <div class = "form-group">Sex:<br/>
+        <InputSelect @bind-Value="NewAdult.Sex">
+            <option>M</option>
+            <option>F</option>
+        </InputSelect>
+    </div>
+    <div class = "form-group">JobTitle:<br/>
+        <InputText @bind-Value="NewJob.JobTitle"/>
+    </div>
+    <div class = "form-group">Salary:<br/>
+        <InputNumber @bind-Value="NewJob.Salary"/>
+    </div>
+    
+    <p class="actions">
+        <button class="btn btn-outline-dark" type="submit">Create</button>
+    </p>
+    
+</EditForm>
+
+@code {
+    private Adult NewAdult = new();
+    private Job NewJob = new();
+
+    private void AddNewAdult()
+    {
+        NewAdult.JobTitle = NewJob;
+        AdultData.AddAdult(NewAdult);
+        NavigationManager.NavigateTo("/AdultsView");
+    }
+
+}

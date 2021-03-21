@@ -1,0 +1,38 @@
+[
+  {
+    "UserName": "Bogdan",
+    "Password": "terog",
+    "Role": "User",
+    "SecurityLevel": 1
+  },
+  {
+    "UserName": "Claudiu2",
+    "Password": "ceva",
+    "Role": "User",
+    "SecurityLevel": 1
+  },
+  {
+    "UserName": "Test",
+    "Password": "test",
+    "Role": "User",
+    "SecurityLevel": 1
+  },
+  {
+    "UserName": "test2",
+    "Password": "test",
+    "Role": "User",
+    "SecurityLevel": 1
+  },
+  {
+    "UserName": "test3",
+    "Password": "test",
+    "Role": "User",
+    "SecurityLevel": 1
+  },
+  {
+    "UserName": "test4",
+    "Password": "test",
+    "Role": "User",
+    "SecurityLevel": 1
+  }
+]
