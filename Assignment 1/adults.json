@@ -166,21 +166,6 @@
   },
   {
     "JobTitle": {
-      "JobTitle": "Nurse",
-      "Salary": 36813
-    },
-    "Id": 11,
-    "FirstName": "Zahra",
-    "LastName": "Salt",
-    "HairColor": "Brown",
-    "EyeColor": "Grey",
-    "Age": 32,
-    "Weight": 124.2,
-    "Height": 174,
-    "Sex": "F"
-  },
-  {
-    "JobTitle": {
       "JobTitle": "Web Administrator",
       "Salary": 44759
     },
