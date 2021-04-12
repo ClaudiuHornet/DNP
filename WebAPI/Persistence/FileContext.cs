@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
-using Models;
+using WebAPI.Models;
 
-namespace FileData
+namespace WebAPI.Persistence
 {
     public class FileContext
     {

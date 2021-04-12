@@ -36,7 +36,7 @@
     public async Task PerformLogin() {
         errorMessage = "";
         try {
-            ((CustomAuthenticationStateProvider) AuthenticationStateProvider).ValidateLogin(username, password);
+            await ((CustomAuthenticationStateProvider) AuthenticationStateProvider).ValidateLoginAsync(username, password);
             username = "";
             password = "";
         } catch (Exception e) {

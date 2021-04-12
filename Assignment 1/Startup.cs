@@ -1,19 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using Assignment_1.Authentication;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Assignment_1.Data;
 using Assignment_1.Data.Impl;
-using FileData;
 using Microsoft.AspNetCore.Components.Authorization;
 
 namespace Assignment_1
@@ -33,10 +26,9 @@ namespace Assignment_1
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<IAdultData, AdultData>();
-            services.AddScoped<IUserService, UserService>();
+            services.AddSingleton<IAdultData, CloudAdultService>();
+            services.AddScoped<IUserService, CloudUserService>();
             services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
-            services.AddSingleton<FileContext>();
 
             services.AddAuthorization(options =>
             {

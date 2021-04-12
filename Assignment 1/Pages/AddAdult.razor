@@ -61,7 +61,7 @@
     private void AddNewAdult()
     {
         NewAdult.JobTitle = NewJob;
-        AdultData.AddAdult(NewAdult);
+        AdultData.AddAdultAsync(NewAdult);
         NavigationManager.NavigateTo("/AdultsView");
     }
 

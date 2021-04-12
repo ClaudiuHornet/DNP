@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Assignment_1.Models;
-using Models;
+using WebAPI.Models;
 
-namespace Assignment_1.Data
+namespace WebAPI.Data
 {
     public interface IAdultData
     {

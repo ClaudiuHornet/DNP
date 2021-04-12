@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text.Json;
-using FileData;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
-using Models;
+using WebAPI.Models;
+using WebAPI.Persistence;
 
-namespace Assignment_1.Data
+namespace WebAPI.Data.Impl
 {
-    public class AdultData:IAdultData
+    public class AdultData : IAdultData
     {
         [Inject] private FileContext _fileContext { get; set; }
 
@@ -17,18 +16,18 @@ namespace Assignment_1.Data
             _fileContext = new FileContext();
         }
 
-        public IList<Adult> GetAdults()
+        public async Task<IList<Adult>> GetAdultsAsync()
         {
             return _fileContext.Adults;
         }
 
-        public void AddAdult(Adult adult)
+        public async Task AddAdultAsync(Adult adult)
         {
             _fileContext.Adults.Add(adult);
             _fileContext.SaveChanges();
         }
 
-        public void RemoveAdult(int adultId)
+        public async Task RemoveAdultAsync(int adultId)
         {
             Adult adultToRemove = _fileContext.Adults.First(a => a.Id == adultId);
             _fileContext.Adults.Remove(adultToRemove);

@@ -4,9 +4,9 @@ using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Assignment_1.Data;
+using Assignment_1.Models;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.JSInterop;
-using Models;
 
 namespace Assignment_1.Authentication
 {
@@ -28,7 +28,7 @@ namespace Assignment_1.Authentication
             string userAsJson = await jsRuntime.InvokeAsync<string>("sessionStorage.getItem", "currentUser");
             if (!string.IsNullOrEmpty(userAsJson)) {
                 User tmp = JsonSerializer.Deserialize<User>(userAsJson);
-                ValidateLogin(tmp.UserName, tmp.Password);
+                ValidateLoginAsync(tmp.UserName, tmp.Password);
             }
         } else {
             identity = SetupClaimsForUser(cachedUser);
@@ -38,17 +38,17 @@ namespace Assignment_1.Authentication
         return await Task.FromResult(new AuthenticationState(cachedClaimsPrincipal));
     }
 
-    public void ValidateLogin(string username, string password) {
+    public async Task ValidateLoginAsync(string username, string password) {
         Console.WriteLine("Validating log in");
         if (string.IsNullOrEmpty(username)) throw new Exception("Enter username");
         if (string.IsNullOrEmpty(password)) throw new Exception("Enter password");
 
         ClaimsIdentity identity = new ClaimsIdentity();
         try {
-            User user = userService.ValidateUser(username, password);
+            User user = await userService.ValidateUserAsync(username, password);
             identity = SetupClaimsForUser(user);
             string serialisedData = JsonSerializer.Serialize(user);
-            jsRuntime.InvokeVoidAsync("sessionStorage.setItem", "currentUser", serialisedData);
+            await jsRuntime.InvokeVoidAsync("sessionStorage.setItem", "currentUser", serialisedData);
             cachedUser = user;
         } catch (Exception e) {
             throw e;
@@ -67,8 +67,8 @@ namespace Assignment_1.Authentication
         
         ClaimsIdentity identity = new ClaimsIdentity();
 
-        User user = userService.RegisterUser(username, password, confirmPassword);
-        ValidateLogin(user.UserName, user.Password);
+        Task<User> user = userService.RegisterUser(username, password, confirmPassword);
+        ValidateLoginAsync(user.Result.UserName, user.Result.Password);
     }
 
     public void Logout() {

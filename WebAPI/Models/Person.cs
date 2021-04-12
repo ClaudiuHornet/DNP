@@ -1,4 +1,4 @@
-namespace Assignment_1.Models {
+namespace WebAPI.Models {
 public class Person {
     
     public int Id { get; set; }

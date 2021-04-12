@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using FileData;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
-using Models;
+using WebAPI.Models;
+using WebAPI.Persistence;
 
-namespace Assignment_1.Data.Impl
+namespace WebAPI.Data.Impl
 {
     public class UserService : IUserService
     {
@@ -37,7 +38,7 @@ namespace Assignment_1.Data.Impl
             
         }
 
-        public User ValidateUser(string username, string password)
+        public async Task<User> ValidateUserAsync(string username, string password)
         {
             
             User first = _users.FirstOrDefault(user => user.UserName.Equals(username));
@@ -54,7 +55,7 @@ namespace Assignment_1.Data.Impl
             return first;
         }
 
-        public User RegisterUser(string username, string password, string confirmPassword)
+        public async Task<User> RegisterUserAsync(string username, string password, string confirmPassword)
         {
             User first = _users.FirstOrDefault(user => user.UserName.Equals(username));
             if (first != null)

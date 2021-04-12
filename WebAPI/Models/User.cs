@@ -1,4 +1,4 @@
-﻿namespace Assignment_1.Models
+﻿namespace WebAPI.Models
 {
     public class User
     {
