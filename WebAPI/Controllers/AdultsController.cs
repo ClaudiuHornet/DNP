@@ -33,8 +33,36 @@ namespace WebAPI.Controllers
                 return StatusCode(500, e.Message);
             }
         }
-        
-        
-        
+
+        [HttpPost]
+        public async Task<ActionResult<Adult>> AddAdult([FromBody] Adult adult)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try {
+                Adult added = await _adultData.AddAdultAsync(adult);
+                return Created($"/{added.Id}",added); // return newly added adult, to get the auto generated id
+            } catch (Exception e) {
+                Console.WriteLine(e);
+                return StatusCode(500, e.Message);
+            }
+        }
+
+        [HttpDelete]
+        [Route("{id:int}")]
+        public async Task DeleteAdult([FromRoute] int id)
+        {
+            try
+            {
+                await _adultData.RemoveAdultAsync(id);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
     }
 }

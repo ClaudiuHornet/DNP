@@ -7,7 +7,7 @@ namespace WebAPI.Data
     public interface IAdultData
     {
         Task<IList<Adult>> GetAdultsAsync();
-        Task AddAdultAsync(Adult adult);
+        Task<Adult> AddAdultAsync(Adult adult);
         Task RemoveAdultAsync(int adultId);
     }
 }

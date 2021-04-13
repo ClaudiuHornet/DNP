@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Assignment_1.Models;
-using Models;
 
 namespace Assignment_1.Data
 {

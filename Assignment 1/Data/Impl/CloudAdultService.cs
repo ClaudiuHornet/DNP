@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -38,9 +39,18 @@ namespace Assignment_1.Data.Impl
             await _client.PostAsync(uri+"/Adults", content);
         }
 
-        public Task RemoveAdultAsync(int adultId)
+        public async Task RemoveAdultAsync(int adultId)
         {
-            throw new System.NotImplementedException();
+            HttpResponseMessage response = await _client.DeleteAsync($@"https://localhost:5003/Adults/{adultId}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                Console.WriteLine(response.StatusCode);
+            }
+            else
+            {
+                throw new Exception($@"Error: {response.StatusCode}, {response.ReasonPhrase}");
+            }
         }
     }
 }

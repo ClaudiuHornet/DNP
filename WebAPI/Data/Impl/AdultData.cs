@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
@@ -21,18 +22,19 @@ namespace WebAPI.Data.Impl
             return _fileContext.Adults;
         }
 
-        public async Task AddAdultAsync(Adult adult)
+        public async Task<Adult> AddAdultAsync(Adult adult)
         {
             _fileContext.Adults.Add(adult);
             _fileContext.SaveChanges();
+            return adult;
         }
 
         public async Task RemoveAdultAsync(int adultId)
         {
+            Console.WriteLine("Hello from AdultData removeAsync");
             Adult adultToRemove = _fileContext.Adults.First(a => a.Id == adultId);
             _fileContext.Adults.Remove(adultToRemove);
             _fileContext.SaveChanges();
-
         }
     }
 }

@@ -129,10 +129,10 @@ else
         AdultsToShow = Adults;
     }
 
-    private void RemoveAdult(int adultId)
+    private async Task RemoveAdult(int adultId)
     {
         Adult adultToRemove = Adults.First(a => a.Id == adultId);
-        AdultData.RemoveAdultAsync(adultId);
+        await AdultData.RemoveAdultAsync(adultId);
         Adults.Remove(adultToRemove);
     }
 

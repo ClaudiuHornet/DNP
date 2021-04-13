@@ -1,36 +1,6 @@
 [
   {
     "JobTitle": {
-      "JobTitle": "Mascot",
-      "Salary": 99821
-    },
-    "Id": 0,
-    "FirstName": "Yasmine",
-    "LastName": "Baxter",
-    "HairColor": "Black",
-    "EyeColor": "Brown",
-    "Age": 58,
-    "Weight": 39.8,
-    "Height": 174,
-    "Sex": "F"
-  },
-  {
-    "JobTitle": {
-      "JobTitle": "Front End Web Developer",
-      "Salary": 66408
-    },
-    "Id": 1,
-    "FirstName": "Lyla",
-    "LastName": "Humphrey",
-    "HairColor": "Black",
-    "EyeColor": "Brown",
-    "Age": 36,
-    "Weight": 64.8,
-    "Height": 147,
-    "Sex": "F"
-  },
-  {
-    "JobTitle": {
       "JobTitle": "Business Development Manager",
       "Salary": 71456
     },
