@@ -36,6 +36,7 @@ namespace Assignment_1.Authentication
 
         ClaimsPrincipal cachedClaimsPrincipal = new ClaimsPrincipal(identity);
         return await Task.FromResult(new AuthenticationState(cachedClaimsPrincipal));
+        
     }
 
     public async Task ValidateLoginAsync(string username, string password) {

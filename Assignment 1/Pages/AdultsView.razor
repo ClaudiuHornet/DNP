@@ -121,7 +121,6 @@ else
             AdultsToShow = Adults;
         }
     }
-    
 
     protected override async Task OnInitializedAsync()
     {
@@ -135,5 +134,4 @@ else
         await AdultData.RemoveAdultAsync(adultId);
         Adults.Remove(adultToRemove);
     }
-
 }
