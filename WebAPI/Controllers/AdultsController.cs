@@ -33,6 +33,22 @@ namespace WebAPI.Controllers
                 return StatusCode(500, e.Message);
             }
         }
+        
+        [HttpGet]
+        [Route("{id:int}")]
+        public async Task<ActionResult<Adult>> GetFilteredAdult([FromRoute] int id)
+        {
+            try
+            {
+                Adult adult = await _adultData.GetFilteredAdultsAsync(id);
+                return Ok(adult);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return StatusCode(500, e.Message);
+            }
+        }
 
         [HttpPost]
         public async Task<ActionResult<Adult>> AddAdult([FromBody] Adult adult)

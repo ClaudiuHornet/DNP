@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,6 +21,28 @@ namespace WebAPI.Data.Impl
         public async Task<IList<Adult>> GetAdultsAsync()
         {
             return _fileContext.Adults;
+        }
+
+        public async Task<Adult> GetFilteredAdultsAsync(int id)
+        {
+            IList<Adult> adults = _fileContext.Adults;
+            Adult adultToSend = null;
+            foreach (Adult adult in adults)
+            {
+                if (id == adult.Id)
+                {
+                    adultToSend = adult;
+                }
+            }
+
+            if (adultToSend != null)
+            {
+                return adultToSend;
+            }
+            else
+            {
+                throw new Exception("adult not found on API");
+            }
         }
 
         public async Task<Adult> AddAdultAsync(Adult adult)

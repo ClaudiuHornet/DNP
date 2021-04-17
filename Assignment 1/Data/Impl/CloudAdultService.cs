@@ -20,7 +20,6 @@ namespace Assignment_1.Data.Impl
 
         public async Task<IList<Adult>> GetAdultsAsync()
         {
-            
             Task<string> stringAsync = _client.GetStringAsync(uri+"/Adults");
             string message = await stringAsync;
             List<Adult> result = JsonSerializer.Deserialize<List<Adult>>(message, new JsonSerializerOptions
@@ -28,6 +27,27 @@ namespace Assignment_1.Data.Impl
                 PropertyNameCaseInsensitive = true
             });
             return result;
+        }
+
+        public async Task<Adult> GetFilteredAdultsAsync(int? id)
+        {
+            HttpResponseMessage responseMessage = await _client.GetAsync($"https://localhost:5003/Adults/{id}");
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                Console.WriteLine(responseMessage.StatusCode);
+                Console.WriteLine("something");
+            }
+            else
+            {
+                throw new Exception($"Error: {responseMessage.StatusCode}, {responseMessage.StatusCode}");
+            }
+            
+            string result = await responseMessage.Content.ReadAsStringAsync();
+            Adult adult = JsonSerializer.Deserialize<Adult>(result, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+            return adult;
         }
 
         public async Task AddAdultAsync(Adult adult)
@@ -41,7 +61,7 @@ namespace Assignment_1.Data.Impl
 
         public async Task RemoveAdultAsync(int adultId)
         {
-            HttpResponseMessage response = await _client.DeleteAsync($@"https://localhost:5003/Adults/{adultId}");
+            HttpResponseMessage response = await _client.DeleteAsync($"https://localhost:5003/Adults/{adultId}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -49,7 +69,7 @@ namespace Assignment_1.Data.Impl
             }
             else
             {
-                throw new Exception($@"Error: {response.StatusCode}, {response.ReasonPhrase}");
+                throw new Exception($"Error: {response.StatusCode}, {response.ReasonPhrase}");
             }
         }
     }

@@ -1,25 +1,23 @@
 ﻿@page "/AdultsView"
 @using Models
 @using Data
-@using Microsoft.AspNetCore.Mvc.Filters
-@using Microsoft.AspNetCore.Mvc.Formatters
 
 @inject IAdultData AdultData
 <h3>Here you can see all the Adults</h3>
 <p>
-    Filter by Adult Id: <input type="number" @oninput="@((arg) => FilterId(arg))" style="width:50px"/>
+    Filter by Adult Id: <input type="number" @oninput="@((arg) => Filter(arg))" style="width:50px"/>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    Filter by Name: <input type="text" @oninput="@((arg) => FilterName(arg))" style="width: 200px"/>
+    @* Filter by Name: <input type="text" @oninput="@((arg) => Filter(arg))" style="width: 200px"/> *@
   
 </p>
 
-@if (AdultsToShow == null)
+@if (Adults == null)
 {
     <p>
         <em>Loading...</em>
     </p>
 }
-else if (!AdultsToShow.Any())
+else if (!Adults.Any())
 {
     <p>
         <em>No existing Adults. You can use the Add feature to add them</em>
@@ -47,7 +45,7 @@ else
         </tr>
         </thead>
         <tbody>
-        @foreach (var adult in AdultsToShow)
+        @foreach (var adult in Adults)
         {
             <tr>
                 <td>@adult.Id</td>
@@ -76,14 +74,15 @@ else
 
 @code {
     private IList<Adult> Adults;
-    private IList<Adult> AdultsToShow;
 
-    private void FilterId(ChangeEventArgs changeEventArgs)
+    private async Task Filter(ChangeEventArgs changeEventArgs)
     {
         int? filterById = null;
+        // string? filterByName = null;
         try
         {
             filterById = int.Parse(changeEventArgs.Value.ToString());
+            // filterByName = changeEventArgs.Value.ToString();
         }
         catch (Exception e)
         {
@@ -91,41 +90,67 @@ else
         }
         if (filterById != null)
         {
-            AdultsToShow = Adults.Where(adult => adult.Id == filterById).ToList();
+            Adults.Clear();
+            Adults.Add( await AdultData.GetFilteredAdultsAsync(filterById));
+            foreach (Adult adult in Adults)
+            {
+                Console.WriteLine(adult);
+            }
         }
         else
         {
-            AdultsToShow = Adults;
+            Adults = await AdultData.GetAdultsAsync();
         }
     }
 
-    private void FilterName(ChangeEventArgs changeEventArgs)
-    {
-        string? filterByFirstName = null;
-        try
-        {
-            filterByFirstName = changeEventArgs.Value.ToString();
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-        }
-        if (filterByFirstName != null)
-        {
-            // Here I made it work by concatenating two lists because I search by first name and also by last name
-            AdultsToShow = Adults.Where(adult => adult.FirstName.Contains(filterByFirstName)).ToList();
-            AdultsToShow = AdultsToShow.Concat(Adults.Where(adult => adult.LastName.Contains(filterByFirstName)).ToList()).ToList();
-        }
-        else
-        {
-            AdultsToShow = Adults;
-        }
-    }
+    // private void FilterId(ChangeEventArgs changeEventArgs)
+    // {
+    //     int? filterById = null;
+    //     try
+    //     {
+    //         filterById = int.Parse(changeEventArgs.Value.ToString());
+    //     }
+    //     catch (Exception e)
+    //     {
+    //         Console.WriteLine(e);
+    //     }
+    //     if (filterById != null)
+    //     {
+    //         AdultsToShow = Adults.Where(adult => adult.Id == filterById).ToList();
+    //     }
+    //     else
+    //     {
+    //         AdultsToShow = Adults;
+    //     }
+    // }
+
+    // private void FilterName(ChangeEventArgs changeEventArgs)
+    // {
+    //     string? filterByName = null;
+    //     try
+    //     {
+    //         filterByName = changeEventArgs.Value.ToString();
+    //     }
+    //     catch (Exception e)
+    //     {
+    //         Console.WriteLine(e);
+    //     }
+    //     if (filterByName != null)
+    //     {
+    //         // Here I made it work by concatenating two lists because I search by first name and also by last name
+    //         AdultsToShow = Adults.Where(adult => adult.FirstName.Contains(filterByName)).ToList();
+    //         AdultsToShow = AdultsToShow.Concat(Adults.Where(adult => adult.LastName.Contains(filterByName)).ToList()).ToList();
+    //     }
+    //     else
+    //     {
+    //         AdultsToShow = Adults;
+    //     }
+    // }
+    
 
     protected override async Task OnInitializedAsync()
     {
         Adults = await AdultData.GetAdultsAsync();
-        AdultsToShow = Adults;
     }
 
     private async Task RemoveAdult(int adultId)
