@@ -54,15 +54,16 @@
      private string confirmPassword;
      public string Messsage { get; set; }
 
-     public async Task PerformRegisterUser()
+     private async Task PerformRegisterUser()
      {
          Messsage = "";
          try
          {
-             ((CustomAuthenticationStateProvider) AuthenticationStateProvider).ValidateRegister(username, password, confirmPassword);
+             await ((CustomAuthenticationStateProvider) AuthenticationStateProvider).ValidateRegister(username, password, confirmPassword);
              username = "";
              password = "";
              confirmPassword = "";
+             NavigationManager.NavigateTo("/", true);
          }
          catch (Exception e)
          {

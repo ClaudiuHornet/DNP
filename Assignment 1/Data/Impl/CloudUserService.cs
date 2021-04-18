@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Json;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Assignment_1.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Assignment_1.Data.Impl
 {
@@ -32,9 +35,22 @@ namespace Assignment_1.Data.Impl
             throw new Exception("User not found");
         }
 
-        public Task<User> RegisterUser(string username, string password, string confirmPassword)
+        public async Task<User> RegisterUser(string username, string password, string confirmPassword)
         {
-            throw new System.NotImplementedException();
+            if (!(password.Equals(confirmPassword)))
+            {
+                throw new Exception("Passwords don't match");
+            }
+
+            User userToSend = new User()
+            {
+                UserName = username,
+                Password = password
+            };
+            string userAsJson = JsonSerializer.Serialize(userToSend);
+            HttpContent content = new StringContent(userAsJson, Encoding.UTF8, "application/json");
+            await _client.PostAsync(uri + "/Users", content);
+            return userToSend;
         }
     }
 }

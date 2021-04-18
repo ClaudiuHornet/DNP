@@ -59,7 +59,7 @@ namespace Assignment_1.Authentication
             Task.FromResult(new AuthenticationState(new ClaimsPrincipal(identity))));
     }
 
-    public void ValidateRegister(string username, string password, string confirmPassword)
+    public async Task ValidateRegister(string username, string password, string confirmPassword)
     {
         Console.WriteLine("Validating registering");
         if (string.IsNullOrEmpty(username)) throw new Exception("Enter username");
@@ -69,7 +69,7 @@ namespace Assignment_1.Authentication
         ClaimsIdentity identity = new ClaimsIdentity();
 
         Task<User> user = userService.RegisterUser(username, password, confirmPassword);
-        ValidateLoginAsync(user.Result.UserName, user.Result.Password);
+        await ValidateLoginAsync(user.Result.UserName, user.Result.Password);
     }
 
     public void Logout() {

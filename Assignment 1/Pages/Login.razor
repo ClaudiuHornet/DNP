@@ -7,26 +7,42 @@
 
 <AuthorizeView>
     <NotAuthorized>
-        <div class="form-group">
-            <label>User name:</label>
-            <input type="text" placeholder="user name" @bind-value="username"/>
-        </div>
-        <div class="form-group">
-            <label>Password</label>
-            <input type="password" placeholder="password" @bind-value="password"/>
-        </div>
-        <div style="color:red">@errorMessage</div>
-
-        <a href="" @onclick="PerformLogin">
-            Login
-        </a>
+        <form>
+            <div>
+                <br /><br /><br /><br /><br />
+            </div>
+            <div>
+                <h3 style="font-weight:bold; color:purple">Log into your account</h3>
+            </div>
+            <div>
+                <br />
+            </div>
+            <div class="col-12 row">
+                <input class="form-control col-12" @bind="username" placeholder="username" />
+            </div>
+            <br />
+            <div class="col-12 row">
+                <input type="password" class="form-control col-12" @bind="password" placeholder="password" />
+            </div>
+            <br />
+            <div class="col-12 row" style="text-align:left; font-weight:bold">
+                <span class="col-12" style="color:red">@errorMessage</span>
+            </div>
+            <br />
+            <div class="col-12 row">
+                <span class="col-12"></span>
+                <input type="submit" class="form-control col-6 btn btn-primary" value="Log in" @onclick="PerformLogin" />
+            </div>
+        </form>
     </NotAuthorized>
     <Authorized>
-        <a href="" @onclick="PerformLogout">
-            Log out
-        </a>
+        <div class="col-12 row">
+            <span class="col-12"></span>
+            <input type="submit" class="form-control col-6 btn btn-primary" value="Log out" @onclick="PerformLogout" />
+        </div>
     </Authorized>
 </AuthorizeView>
+
 
 @code {
     private string username;
@@ -39,6 +55,7 @@
             await ((CustomAuthenticationStateProvider) AuthenticationStateProvider).ValidateLoginAsync(username, password);
             username = "";
             password = "";
+            NavigationManager.NavigateTo("/");
         } catch (Exception e) {
             errorMessage = e.Message;
         }

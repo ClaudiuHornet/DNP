@@ -1,3 +1,14 @@
 [
-  
+  {
+    "UserName": "smth",
+    "Password": "smth",
+    "Role": "User",
+    "SecurityLevel": 1
+  },
+  {
+    "UserName": "sm",
+    "Password": "sm",
+    "Role": "User",
+    "SecurityLevel": 1
+  }
 ]

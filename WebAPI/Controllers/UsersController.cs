@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Data;
@@ -29,6 +30,26 @@ namespace WebAPI.Controllers
             catch (Exception e)
             {
                 return BadRequest(e.Message);
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<User>> ValidateRegister([FromBody] User user)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                User userToAdd = await userService.RegisterUserAsync(user.UserName, user.Password, user.Password);
+                return Ok(userToAdd);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return StatusCode(500, e.Message);
             }
         }
     }
