@@ -26,6 +26,10 @@ namespace Assignment_1.Data.Impl
             {
                 PropertyNameCaseInsensitive = true
             });
+            foreach (var adult in result)
+            {
+                Console.WriteLine("adult from CloudAdultService : " + adult);
+            }
             return result;
         }
 

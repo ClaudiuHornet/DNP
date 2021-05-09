@@ -37,6 +37,11 @@ namespace WebAPI.Data.Impl
             });
             
         }
+        
+        public async Task<IList<User>> GetUsersAsync()
+        {
+            return _fileContext.Users;
+        }
 
         public async Task<User> ValidateUserAsync(string username, string password)
         {

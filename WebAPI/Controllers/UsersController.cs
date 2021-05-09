@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Data;
 using WebAPI.Models;
+using WebAPI.Repository;
 
 namespace WebAPI.Controllers
 {
@@ -11,11 +13,11 @@ namespace WebAPI.Controllers
     [Route("[controller]")]
     public class UsersController : ControllerBase
     {
-        private readonly IUserService userService;
+        private IRepositoryUsers _repositoryUsers;
 
-        public UsersController(IUserService userService)
+        public UsersController(IRepositoryUsers repositoryUsers)
         {
-            this.userService = userService;
+            _repositoryUsers = repositoryUsers;
         }
 
         [HttpGet]
@@ -24,7 +26,7 @@ namespace WebAPI.Controllers
             Console.WriteLine("Here");
             try
             {
-                var user = await userService.ValidateUserAsync(username, password);
+                var user = await _repositoryUsers.ValidateUserAsync(username, password);
                 return Ok(user);
             }
             catch (Exception e)
@@ -43,7 +45,7 @@ namespace WebAPI.Controllers
 
             try
             {
-                User userToAdd = await userService.RegisterUserAsync(user.UserName, user.Password, user.Password);
+                User userToAdd = await _repositoryUsers.RegisterUserAsync(user.UserName, user.Password, user.Password);
                 return Ok(userToAdd);
             }
             catch (Exception e)

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Data;
 using WebAPI.Models;
+using WebAPI.Repository;
 
 namespace WebAPI.Controllers
 {
@@ -12,11 +13,11 @@ namespace WebAPI.Controllers
     [Route("[controller]")]
     public class AdultsController : ControllerBase
     {
-        private IAdultData _adultData;
+        private IRepositoryAdults _repositoryAdults;
 
-        public AdultsController(IAdultData adultData)
+        public AdultsController(IRepositoryAdults repositoryAdults)
         {
-            _adultData = adultData;
+            _repositoryAdults = repositoryAdults;
         }
 
         [HttpGet]
@@ -24,7 +25,11 @@ namespace WebAPI.Controllers
         {
             try
             {
-                IList<Adult> adults = await _adultData.GetAdultsAsync();
+                IList<Adult> adults = await _repositoryAdults.GetAdultsAsync();
+                foreach (var adult in adults)
+                {
+                    Console.WriteLine(adult.ToString());
+                }
                 return Ok(adults);
             }
             catch (Exception e)
@@ -40,7 +45,7 @@ namespace WebAPI.Controllers
         {
             try
             {
-                Adult adult = await _adultData.GetFilteredAdultsAsync(id);
+                Adult adult = await _repositoryAdults.GetFilteredAdultsAsync(id);
                 return Ok(adult);
             }
             catch (Exception e)
@@ -57,8 +62,9 @@ namespace WebAPI.Controllers
             {
                 return BadRequest(ModelState);
             }
-            try {
-                Adult added = await _adultData.AddAdultAsync(adult);
+            try
+            {
+                Adult added = await _repositoryAdults.AddAdultAsync(adult);
                 return Created($"/{added.Id}",added); // return newly added adult, to get the auto generated id
             } catch (Exception e) {
                 Console.WriteLine(e);
@@ -72,7 +78,7 @@ namespace WebAPI.Controllers
         {
             try
             {
-                await _adultData.RemoveAdultAsync(id);
+                await _repositoryAdults.RemoveAdultAsync(id);
             }
             catch (Exception e)
             {

@@ -13,6 +13,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using WebAPI.Data;
 using WebAPI.Data.Impl;
+using WebAPI.DataAccess;
+using WebAPI.Repository;
+using WebAPI.Repository.Impl;
 
 namespace WebAPI
 {
@@ -30,8 +33,10 @@ namespace WebAPI
         {
             services.AddControllers();
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "WebAPI", Version = "v1"}); });
-            services.AddScoped<IAdultData, AdultData>();
-            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IRepositoryAdults, AdultRepository>();
+            services.AddScoped<IRepositoryUsers, UsersRepository>();
+            services.AddDbContext<AssignmentDbContext>();
+            // services.AddScoped<IUserService, UserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

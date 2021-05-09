@@ -1,14 +1,14 @@
 [
   {
-    "UserName": "smth",
-    "Password": "smth",
-    "Role": "User",
-    "SecurityLevel": 1
+    "UserName": "admin",
+    "Password": "admin",
+    "Role": "admin",
+    "SecurityLevel": 3
   },
   {
-    "UserName": "sm",
-    "Password": "sm",
-    "Role": "User",
-    "SecurityLevel": 1
+    "UserName": "manager",
+    "Password": "manage",
+    "Role": "manager",
+    "SecurityLevel": 2
   }
 ]

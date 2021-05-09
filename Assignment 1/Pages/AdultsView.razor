@@ -45,43 +45,44 @@ else
         </tr>
         </thead>
         <tbody>
-        @foreach (var adult in Adults)
-        {
-            <tr>
-                <td>@adult.Id</td>
-                <td>@adult.FirstName</td>
-                <td>@adult.LastName</td>
-                <td>@adult.HairColor</td>
-                <td>@adult.EyeColor</td>
-                <td>@adult.Age</td>
-                <td>@adult.Weight</td>
-                <td>@adult.Height</td>
-                <td>@adult.Sex</td>
-                <td>@adult.JobTitle.JobTitle</td>
-                <td>@adult.JobTitle.Salary</td>
-                <AuthorizeView Policy="SecurityLevel3">
-                    <td>
-                        <button @onclick="@((() => RemoveAdult(adult.Id)))">
-                            <i class="oi oi-trash" style="color: red"/>
-                        </button>
-                    </td>
-                </AuthorizeView>
-            </tr>
-        }
+            @foreach (var adult in Adults)
+            {
+                <tr>
+                    <td>@adult.Id</td>
+                    <td>@adult.FirstName</td>
+                    <td>@adult.LastName</td>
+                    <td>@adult.HairColor</td>
+                    <td>@adult.EyeColor</td>
+                    <td>@adult.Age</td>
+                    <td>@adult.Weight</td>
+                    <td>@adult.Height</td>
+                    <td>@adult.Sex</td>
+                    <td>@adult.JobTitle.JobTitle</td>
+                    <td>@adult.JobTitle.Salary</td>
+                    <AuthorizeView Policy="SecurityLevel3">
+                        <td>
+                            <button @onclick="@((() => RemoveAdult(adult.Id)))">
+                                <i class="oi oi-trash" style="color: red"/>
+                            </button>
+                        </td>
+                    </AuthorizeView>
+                </tr>
+            }
         </tbody>
     </table>
 }
 
 @code {
     private IList<Adult> Adults;
+    private int? filterById;
 
     private async Task Filter(ChangeEventArgs changeEventArgs)
     {
-        int? filterById = null;
+         filterById = null;
         // string? filterByName = null;
         try
         {
-            filterById = int.Parse(changeEventArgs.Value.ToString());
+            if (changeEventArgs.Value != null) filterById = int.Parse(changeEventArgs.Value.ToString());
             // filterByName = changeEventArgs.Value.ToString();
         }
         catch (Exception e)
@@ -94,7 +95,7 @@ else
             Adults.Add( await AdultData.GetFilteredAdultsAsync(filterById));
             foreach (Adult adult in Adults)
             {
-                Console.WriteLine(adult);
+                Console.WriteLine("adult from Filter method : " + adult);
             }
         }
         else
@@ -151,6 +152,10 @@ else
     protected override async Task OnInitializedAsync()
     {
         Adults = await AdultData.GetAdultsAsync();
+        foreach (Adult adult in Adults)
+        {
+            Console.WriteLine("adult from OnInitializedAsync : " + adult);
+        }
     }
 
     private async Task RemoveAdult(int adultId)
