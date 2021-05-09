@@ -11,5 +11,10 @@ namespace WebAPI.Models
         public string JobTitle { get; set; }
         [Required]
         public int Salary { get; set; }
+        
+        public override string ToString()
+        {
+            return Id + ", " + JobTitle + ", " + Salary;
+        }
     }
 }

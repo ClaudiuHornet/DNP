@@ -6,5 +6,10 @@
         public string Password { get; set; }
         public string Role { get; set; }
         public int SecurityLevel { get; set; }
+        
+        public override string ToString()
+                {
+                    return UserName + ", " + Password;
+                }
     }
 }

@@ -9,7 +9,7 @@ using WebAPI.DataAccess;
 namespace WebAPI.Migrations
 {
     [DbContext(typeof(AssignmentDbContext))]
-    [Migration("20210503092253_InitialCreate")]
+    [Migration("20210509124701_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

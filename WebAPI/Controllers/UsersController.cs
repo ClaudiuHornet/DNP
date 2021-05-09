@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using WebAPI.Data;
 using WebAPI.Models;
 using WebAPI.Repository;
 
@@ -23,10 +22,10 @@ namespace WebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<User>> ValidateUser([FromQuery] string username, [FromQuery] string password)
         {
-            Console.WriteLine("Here");
             try
             {
                 var user = await _repositoryUsers.ValidateUserAsync(username, password);
+                Console.WriteLine(user.ToString());
                 return Ok(user);
             }
             catch (Exception e)
@@ -38,6 +37,7 @@ namespace WebAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<User>> ValidateRegister([FromBody] User user)
         {
+            Console.WriteLine("Hello from user controller ");
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -46,6 +46,7 @@ namespace WebAPI.Controllers
             try
             {
                 User userToAdd = await _repositoryUsers.RegisterUserAsync(user.UserName, user.Password, user.Password);
+                Console.WriteLine(userToAdd);
                 return Ok(userToAdd);
             }
             catch (Exception e)

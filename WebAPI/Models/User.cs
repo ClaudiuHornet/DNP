@@ -12,5 +12,10 @@ namespace WebAPI.Models
         public string Role { get; set; }
         [Required]
         public int SecurityLevel { get; set; }
+
+        public override string ToString()
+        {
+            return UserName + ", " + Password;
+        }
     }
 }

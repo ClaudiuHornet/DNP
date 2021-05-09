@@ -62,13 +62,15 @@ namespace Assignment_1.Authentication
     public async Task ValidateRegister(string username, string password, string confirmPassword)
     {
         Console.WriteLine("Validating registering");
+        Console.WriteLine(username);
+        Console.WriteLine(password);
         if (string.IsNullOrEmpty(username)) throw new Exception("Enter username");
         if (string.IsNullOrEmpty(password)) throw new Exception("Enter password");
         if (string.IsNullOrEmpty(confirmPassword)) throw new Exception("Enter password confirmation");
         
         ClaimsIdentity identity = new ClaimsIdentity();
 
-        Task<User> user = userService.RegisterUser(username, password, confirmPassword);
+        Task<User> user = userService.RegisterUserAsync(username, password, confirmPassword);
         await ValidateLoginAsync(user.Result.UserName, user.Result.Password);
     }
 

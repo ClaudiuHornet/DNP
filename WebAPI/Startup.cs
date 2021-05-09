@@ -11,8 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using WebAPI.Data;
-using WebAPI.Data.Impl;
+
 using WebAPI.DataAccess;
 using WebAPI.Repository;
 using WebAPI.Repository.Impl;
@@ -36,7 +35,6 @@ namespace WebAPI
             services.AddScoped<IRepositoryAdults, AdultRepository>();
             services.AddScoped<IRepositoryUsers, UsersRepository>();
             services.AddDbContext<AssignmentDbContext>();
-            // services.AddScoped<IUserService, UserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

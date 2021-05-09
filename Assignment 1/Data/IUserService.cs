@@ -6,6 +6,6 @@ namespace Assignment_1.Data
     public interface IUserService
     {
         Task<User> ValidateUserAsync(string username, string password);
-        Task<User> RegisterUser(string username, string password, string confirmPassword);
+        Task<User> RegisterUserAsync(string username, string password, string confirmPassword);
     }
 }

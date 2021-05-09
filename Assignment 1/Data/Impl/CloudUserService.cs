@@ -30,12 +30,13 @@ namespace Assignment_1.Data.Impl
                 {
                     PropertyNameCaseInsensitive = true 
                 });
+                Console.WriteLine(resultUser.ToString());
                 return resultUser;
             } 
             throw new Exception("User not found");
         }
 
-        public async Task<User> RegisterUser(string username, string password, string confirmPassword)
+        public async Task<User> RegisterUserAsync(string username, string password, string confirmPassword)
         {
             if (!(password.Equals(confirmPassword)))
             {
@@ -45,8 +46,11 @@ namespace Assignment_1.Data.Impl
             User userToSend = new User()
             {
                 UserName = username,
-                Password = password
+                Password = password,
+                Role = "User",
+                SecurityLevel = 1
             };
+            Console.WriteLine(userToSend);
             string userAsJson = JsonSerializer.Serialize(userToSend);
             HttpContent content = new StringContent(userAsJson, Encoding.UTF8, "application/json");
             await _client.PostAsync(uri + "/Users", content);

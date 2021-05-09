@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -15,6 +16,7 @@ namespace WebAPI.Repository.Impl
             await using AssignmentDbContext dbContext = new AssignmentDbContext();
             User user = dbContext.Users.FirstOrDefaultAsync(user1 => user1.UserName.Equals(username)).GetAwaiter()
                 .GetResult();
+            Console.WriteLine(user.ToString());
             if (user == null)
             {
                 throw new Exception("User not found");
@@ -28,9 +30,29 @@ namespace WebAPI.Repository.Impl
             return user;
         }
 
-        public Task<User> RegisterUserAsync(string username, string password, string confirmPassword)
+        public async Task<User> RegisterUserAsync(string username, string password, string confirmPassword)
         {
-            throw new System.NotImplementedException();
+            await using AssignmentDbContext dbContext = new AssignmentDbContext();
+            User user = dbContext.Users.FirstOrDefaultAsync(user1 => user1.UserName.Equals(username)).GetAwaiter().GetResult();
+            // Console.WriteLine(user.ToString());
+            if (user != null)
+            {
+                throw new Exception("User already exists");
+            }
+
+            User newUser = new User()
+            {
+                UserName = username,
+                Password = password,
+                Role = "User",
+                SecurityLevel = 1
+            };
+
+            Console.WriteLine(newUser.ToString());
+            
+            await AddUserAsync(newUser);
+            Console.WriteLine("end of registerUserAsync userrepository");
+            return newUser;
         }
 
         public async Task<User> AddUserAsync(User user)
@@ -38,6 +60,7 @@ namespace WebAPI.Repository.Impl
             await using AssignmentDbContext dbContext = new AssignmentDbContext();
             EntityEntry<User> newlyAdded = await dbContext.Users.AddAsync(user);
             await dbContext.SaveChangesAsync();
+            Console.WriteLine("Success");
             return newlyAdded.Entity;
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -13,7 +14,7 @@ namespace WebAPI.Repository.Impl
         public async Task<IList<Adult>> GetAdultsAsync()
         {
             await using AssignmentDbContext dbContext = new AssignmentDbContext();
-            return await dbContext.Adults.ToListAsync();
+            return dbContext.Adults.Include(adult => adult.JobTitle).ToList();
         }
 
         public async Task<Adult> GetFilteredAdultsAsync(int id)
